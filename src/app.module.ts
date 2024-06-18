@@ -1,8 +1,8 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { LoggerService } from './common/services';
 import { DatabaseModule } from './database';
-import { UserModule } from './modules/user';
-import { LoggerService } from './services';
 import { LogMiddleware } from './middlewares';
+import { UserModule } from './modules/user';
 
 @Module({
   imports: [DatabaseModule, UserModule],
