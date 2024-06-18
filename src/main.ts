@@ -9,6 +9,7 @@ dotenv.config();
 
 import { AppModule } from './app.module';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
@@ -30,6 +31,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
 
   SwaggerModule.setup('/doc', app, document);
+
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   const corsOptions: CorsOptions = {
     origin: '*',
