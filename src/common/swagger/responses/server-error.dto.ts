@@ -1,17 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { HttpStatus } from '@nestjs/common';
 
-export class ErrorResponseDto {
+export class ServerErrorDto {
   @ApiProperty({
     description: 'Mensagem de erro',
-    example:
-      'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
+    example: 'Erro Interno do Servidor',
   })
   message: string;
 
   @ApiProperty({
-    description: 'Código de status HTTP',
-    example: HttpStatus.CONFLICT,
+    description: 'Código de status HTTP (500)',
+    example: 500,
   })
   statusCode: number;
 

@@ -11,4 +11,8 @@ export class SuccessResponseDto {
     example: 200,
   })
   statusCode: number;
+
+  constructor(partial: Partial<SuccessResponseDto>) {
+    Object.assign(this, partial);
+  }
 }
