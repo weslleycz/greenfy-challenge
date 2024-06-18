@@ -13,9 +13,8 @@ const config: TypeOrmModuleOptions = {
   database: process.env.DATABASE_NAME,
   synchronize: true,
   logging: false,
-  logger: 'file',
   entities: [`${__dirname}../../entities/*.{ts,js}`],
-  migrations: [`${__dirname}../../migrations/*.{ts,js}`],
+  migrations: [`${__dirname}../../src/database/migrations/*.{ts,js}`],
   autoLoadEntities: true,
   migrationsTableName: 'migration_table',
 };
