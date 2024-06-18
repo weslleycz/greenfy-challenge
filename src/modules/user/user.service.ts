@@ -57,9 +57,7 @@ export class UserService {
   }
 
   async getAll(): Promise<Array<UserResponseDTO>> {
-    return (await this.userRepository.find({
-      select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
-    })) as Array<UserResponseDTO>;
+    return (await this.userRepository.getAllUsers()) as Array<UserResponseDTO>;
   }
 
   async getById(id: string): Promise<UserResponseDTO | UserNotFoundDTO> {
