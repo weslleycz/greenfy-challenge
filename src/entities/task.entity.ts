@@ -6,12 +6,10 @@ import { User } from './user.entity';
 @Entity()
 export class Task {
   @Column()
-  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  @ApiProperty()
   createdAt: Date;
 
   @Column()
@@ -19,10 +17,8 @@ export class Task {
   updatedAt: Date;
 
   @Column({ default: TaskStatus.PENDING })
-  @ApiProperty()
   status: TaskStatus;
 
-  @ApiProperty()
   @ManyToOne(() => User, (user) => user.movies)
   user: User;
 }
