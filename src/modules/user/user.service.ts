@@ -1,26 +1,76 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BcryptService } from '../../common/services';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRepository } from './user.repository';
+import { SuccessResponseDto, ErrorResponseDto } from './dto';
+import { UserResponseDTO } from './dto/user-response.dto';
+import { UserNotFoundDTO } from './dto/userNotFound.dto';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    private readonly bcryptService: BcryptService,
+    private readonly userRepository: UserRepository,
+  ) {}
+
+  async create(
+    data: CreateUserDto,
+  ): Promise<SuccessResponseDto | ErrorResponseDto> {
+    try {
+      const userExists = await this.userRepository.findOne({
+        where: { email: data.email },
+      });
+
+      if (userExists) {
+        throw new HttpException(
+          new ErrorResponseDto(
+            'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
+            HttpStatus.CONFLICT,
+          ),
+          HttpStatus.CONFLICT,
+        );
+      }
+
+      const hashPassword = await this.bcryptService.hashPassword(data.password);
+
+      const newUser = {
+        email: data.email,
+        name: data.name,
+        password: hashPassword,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await this.userRepository.save(newUser);
+
+      return new SuccessResponseDto({
+        message: 'Usuário criado com sucesso!',
+        statusCode: HttpStatus.OK,
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async getAll(): Promise<Array<UserResponseDTO>> {
+    return (await this.userRepository.getAllUsers()) as Array<UserResponseDTO>;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async getById(id: string): Promise<UserResponseDTO | UserNotFoundDTO> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      },
+      select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
+    });
+    if (user) {
+      return { ...user };
+    } else {
+      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+    }
   }
 }
