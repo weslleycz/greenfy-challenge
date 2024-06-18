@@ -19,6 +19,6 @@ export class Task {
   @Column({ default: TaskStatus.PENDING })
   status: TaskStatus;
 
-  @ManyToOne(() => User, (user) => user.movies)
+  @ManyToOne(() => User, (user) => user.tasks)
   user: User;
 }

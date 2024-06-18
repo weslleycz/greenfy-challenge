@@ -23,5 +23,5 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(() => Task, (task) => task.user)
-  movies: Task[];
+  tasks: Task[];
 }

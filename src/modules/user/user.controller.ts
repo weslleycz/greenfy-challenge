@@ -8,7 +8,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Criar um novo usuário' })
   @ApiBody({ type: CreateUserDto })
-  async create(@Body() createCatDto: CreateUserDto) {
+  async create(@Body() createCatDto: CreateUserDto): Promise<any> {
     return createCatDto;
   }
 }
