@@ -1,10 +1,18 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiOperation,
-  ApiParam,
   ApiResponse,
   ApiTags,
+  ApiParam,
 } from '@nestjs/swagger';
 import { ServerErrorDto } from '../../common/swagger/responses/server-error.dto';
 import {
@@ -13,8 +21,8 @@ import {
   SuccessResponseDto,
   UserResponseDTO,
 } from './dto';
-import { UserNotFoundDTO } from './dto/userNotFound.dto';
 import { UserService } from './user.service';
+import { UserNotFoundDTO } from './dto/userNotFound.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -58,7 +66,12 @@ export class UserController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Obter usuário por id' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID do usuário',
+    format: 'uuid',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   @ApiResponse({
     status: 200,
     description: 'Detalhes do usuário.',
@@ -70,7 +83,7 @@ export class UserController {
     type: UserNotFoundDTO,
   })
   async getById(
-    @Param('id')
+    @Param('id', ParseUUIDPipe)
     id: string,
   ): Promise<UserResponseDTO | UserNotFoundDTO> {
     return await this.userService.getById(id);

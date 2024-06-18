@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import { SuccessResponseDto, ErrorResponseDto } from './dto';
 import { UserResponseDTO } from './dto/user-response.dto';
+import { UserNotFoundDTO } from './dto/userNotFound.dto';
 
 @Injectable()
 export class UserService {
@@ -59,5 +60,19 @@ export class UserService {
     return (await this.userRepository.find({
       select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
     })) as Array<UserResponseDTO>;
+  }
+
+  async getById(id: string): Promise<UserResponseDTO | UserNotFoundDTO> {
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      },
+      select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
+    });
+    if (user) {
+      return { ...user };
+    } else {
+      throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+    }
   }
 }
