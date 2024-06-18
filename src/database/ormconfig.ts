@@ -17,7 +17,7 @@ const config: TypeOrmModuleOptions = {
   entities: [`${__dirname}../../entities/*.{ts,js}`],
   migrations: [`${__dirname}../../migrations/*.{ts,js}`],
   autoLoadEntities: true,
-  migrationsTableName: 'custom_migration_table',
+  migrationsTableName: 'migration_table',
 };
 
 export { config };
