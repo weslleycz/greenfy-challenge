@@ -3,6 +3,7 @@ import { BcryptService } from '../../common/services';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import { SuccessResponseDto, ErrorResponseDto } from './dto';
+import { UserResponseDTO } from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
@@ -52,5 +53,11 @@ export class UserService {
 
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  async getAll(): Promise<Array<UserResponseDTO>> {
+    return (await this.userRepository.find({
+      select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
+    })) as Array<UserResponseDTO>;
   }
 }
