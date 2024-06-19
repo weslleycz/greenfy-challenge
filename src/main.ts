@@ -30,7 +30,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
 
-  SwaggerModule.setup('/doc', app, document);
+  SwaggerModule.setup('/docs', app, document);
 
   app.useGlobalFilters(new AllExceptionsFilter());
 

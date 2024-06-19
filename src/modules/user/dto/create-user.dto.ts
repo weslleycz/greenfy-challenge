@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-  MinLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 import { Match } from '../../../common/decorators';
 
 export class CreateUserDto {
@@ -59,14 +53,4 @@ export class CreateUserDto {
     message: 'As senhas não coincidem',
   })
   passwordConfirm: string;
-
-  @ApiProperty({
-    description: 'Número de telefone do usuário (opcional)',
-    example: '123456789',
-    type: String,
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  phoneNumber?: string;
 }

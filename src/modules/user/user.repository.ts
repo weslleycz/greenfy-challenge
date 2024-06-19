@@ -23,4 +23,12 @@ export class UserRepository extends Repository<User> {
       select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
     });
   }
+
+  async getByEmail(email: string): Promise<User> {
+    return await this.findOne({
+      where: {
+        email,
+      },
+    });
+  }
 }

@@ -5,6 +5,7 @@ import { UserRepository } from './user.repository';
 import { SuccessResponseDto, ErrorResponseDto } from './dto';
 import { UserResponseDTO } from './dto/user-response.dto';
 import { UserNotFoundDTO } from './dto/userNotFound.dto';
+import { User } from '../../entities';
 
 @Injectable()
 export class UserService {
@@ -63,6 +64,18 @@ export class UserService {
       return { ...user };
     } else {
       throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async getByEmail(email: string): Promise<User | null> {
+    try {
+      const user = await this.userRepository.getByEmail(email);
+      return { ...user };
+    } catch (error) {
+      throw new HttpException(
+        'E-mail não cadastrado. Verifique e tente novamente',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
   }
 }
