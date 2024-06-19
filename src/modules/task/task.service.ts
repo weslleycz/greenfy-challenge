@@ -4,6 +4,7 @@ import {
   CreateTaskDto,
   CreateTaskSuccessResponseDto,
   ErrorTaskResponseDto,
+  TaskResponseDTO,
 } from './dto';
 import { TaskRepository } from './task.repository';
 
@@ -23,7 +24,6 @@ export class TaskService {
           id,
         },
       });
-
       await this.taskRepository.save({
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -41,6 +41,13 @@ export class TaskService {
         'Não foi possível criar a tarefa',
         HttpStatus.BAD_REQUEST,
       );
+    }
+  }
+  async getById(id: string): Promise<TaskResponseDTO> {
+    try {
+      return await this.taskRepository.getById(id);
+    } catch (error) {
+      throw new HttpException('Tarefa não encontrada', HttpStatus.NOT_FOUND);
     }
   }
 }

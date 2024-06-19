@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BcryptService } from '../../common/services';
+import { gerarToken } from '../../common/utils/gerarToken';
 import { User } from '../../entities';
 import {
   CreateUserSuccessResponseDto,
@@ -11,15 +12,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDTO } from './dto/user-response.dto';
 import { UserNotFoundDTO } from './dto/userNotFound.dto';
 import { UserRepository } from './user.repository';
-import { JwtService } from '@nestjs/jwt';
-import { gerarToken } from '../../common/utils/gerarToken';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly bcryptService: BcryptService,
     private readonly userRepository: UserRepository,
-    private readonly jwtService: JwtService,
   ) {}
 
   async create(

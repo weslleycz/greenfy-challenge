@@ -1,5 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
-import { TaskService } from './task.service';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -7,15 +6,18 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
 import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
+import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
 import {
   CreateTaskDto,
   CreateTaskSuccessResponseDto,
   ErrorTaskResponseDto,
+  TaskResponseDTO,
 } from './dto';
+import { TaskService } from './task.service';
 
 import { Request } from 'express';
+import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
 
 @ApiTags('Task')
 @Controller('task')
@@ -50,5 +52,24 @@ export class TaskController {
     @Req() request: Request,
   ): Promise<AuthTokenUnauthorized | ErrorTaskResponseDto> {
     return await this.taskService.create(body, request.headers.id as string);
+  }
+
+  @Get('id')
+  @ApiOperation({ summary: 'Selecionar tarefa por id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Retorna a tarefa selecionado',
+    type: TaskResponseDTO,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Tarefa não encontrada',
+    type: TaskNotFoundDTO,
+  })
+  async getById(
+    @Param('id')
+    id: string,
+  ) {
+    return await this.taskService.getById(id);
   }
 }
