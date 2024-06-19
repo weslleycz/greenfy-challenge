@@ -14,4 +14,13 @@ export class UserRepository extends Repository<User> {
     })) as unknown as Promise<UserResponseDTO[]>;
     return users;
   }
+
+  async getById(id: string): Promise<UserResponseDTO> {
+    return await this.findOne({
+      where: {
+        id,
+      },
+      select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
+    });
+  }
 }

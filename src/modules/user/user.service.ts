@@ -23,10 +23,7 @@ export class UserService {
 
       if (userExists) {
         throw new HttpException(
-          new ErrorResponseDto(
-            'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
-            HttpStatus.CONFLICT,
-          ),
+          'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
           HttpStatus.CONFLICT,
         );
       }
@@ -61,12 +58,7 @@ export class UserService {
   }
 
   async getById(id: string): Promise<UserResponseDTO | UserNotFoundDTO> {
-    const user = await this.userRepository.findOne({
-      where: {
-        id,
-      },
-      select: ['createdAt', 'email', 'id', 'name', 'updatedAt'],
-    });
+    const user = await this.userRepository.getById(id);
     if (user) {
       return { ...user };
     } else {
