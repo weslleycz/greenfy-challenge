@@ -1,21 +1,15 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ServerErrorDto } from '../../common/swagger/responses/server-error.dto';
 import {
   LoginRequestDTO,
-  SuccessResponseDto,
   NotFoundErrorResponseDTO,
+  SuccessResponseDto,
   WrongPasswordErrorResponseDTO,
 } from './dto';
 import { LocalStrategy } from './local.auth';
 
 @ApiTags('Auth')
 @Controller('auth')
-@ApiResponse({
-  status: HttpStatus.INTERNAL_SERVER_ERROR,
-  description: 'Erro Interno do Servidor',
-  type: ServerErrorDto,
-})
 export class AuthController {
   constructor(private readonly localStrategy: LocalStrategy) {}
 
