@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
@@ -20,6 +30,7 @@ import { TaskService } from './task.service';
 import { Request } from 'express';
 import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
 import { TaskStatus } from '../../common/enums/task-status.enum';
+import { TaskResposeDeleteSuccessDto } from './dto/delete-task-success.dto';
 
 @ApiTags('Task')
 @Controller('task')
@@ -57,6 +68,7 @@ export class TaskController {
   }
 
   @Get('id')
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiOperation({ summary: 'Selecionar tarefa por id' })
   @ApiResponse({
     status: 200,
@@ -71,7 +83,7 @@ export class TaskController {
   async getById(
     @Param('id')
     id: string,
-  ) {
+  ): Promise<TaskResponseDTO | TaskNotFoundDTO> {
     return await this.taskService.getById(id);
   }
 
@@ -96,5 +108,15 @@ export class TaskController {
     @Req() request: Request,
   ): Promise<TaskResponseDTO[]> {
     return await this.taskService.getAll(request.headers.id as string, status);
+  }
+
+  @Delete('id')
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
+  @ApiOperation({ summary: 'Deletar tarefa por id' })
+  async delete(
+    @Param('id') id: string,
+    @Req() request: Request,
+  ): Promise<TaskResposeDeleteSuccessDto | TaskNotFoundDTO> {
+    return await this.taskService.delete(id, request.headers.id as string);
   }
 }
