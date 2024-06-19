@@ -11,12 +11,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDTO } from './dto/user-response.dto';
 import { UserNotFoundDTO } from './dto/userNotFound.dto';
 import { UserRepository } from './user.repository';
+import { JwtService } from '@nestjs/jwt';
+import { gerarToken } from '../../common/utils/gerarToken';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly bcryptService: BcryptService,
     private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(
@@ -44,12 +47,13 @@ export class UserService {
         updatedAt: new Date(),
       };
 
-      await this.userRepository.save(newUser);
-
-      return new CreateUserSuccessResponseDto({
+      const user = await this.userRepository.save(newUser);
+      const auth = await gerarToken(user);
+      return {
         message: 'Usuário criado com sucesso!',
         statusCode: HttpStatus.OK,
-      });
+        ...auth,
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

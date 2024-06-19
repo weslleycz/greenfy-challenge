@@ -13,7 +13,10 @@ export class CreateUserSuccessResponseDto {
   })
   statusCode: number;
 
-  constructor(partial: Partial<CreateUserSuccessResponseDto>) {
-    Object.assign(this, partial);
-  }
+  @ApiProperty({
+    description: 'Token de acesso',
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  })
+  access_token: string;
 }

@@ -34,7 +34,7 @@ export class UserController {
   @ApiOperation({ summary: 'Criar um novo usuário.' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
-    status: 409,
+    status: 200,
     description: 'Usuário criado com sucesso.',
     type: CreateUserSuccessResponseDto,
   })

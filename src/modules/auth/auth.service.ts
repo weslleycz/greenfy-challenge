@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import { BcryptService } from '../../common/services';
-import { User } from '../../entities';
+import { gerarToken } from '../../common/utils/gerarToken';
 import { UserService } from '../user';
 import {
   NotFoundErrorResponseDTO,
@@ -16,7 +15,6 @@ dotenv.config();
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
-    private readonly jwtService: JwtService,
     private readonly bcryptService: BcryptService,
   ) {}
 
@@ -37,31 +35,12 @@ export class AuthService {
     if (
       await this.bcryptService.comparePasswords(data.password, user.password)
     ) {
-      return await this.gerarToken(user);
+      return await gerarToken(user);
     } else {
       throw new HttpException(
         'Senha incorreta. Tente novamente.',
         HttpStatus.UNAUTHORIZED,
       );
     }
-  }
-
-  async gerarToken(
-    user: User,
-  ): Promise<
-    | SuccessResponseDto
-    | NotFoundErrorResponseDTO
-    | WrongPasswordErrorResponseDTO
-  > {
-    const payload = {
-      access_token: this.jwtService.sign(
-        { id: user.id },
-        {
-          secret: process.env.Security_JWT,
-          expiresIn: '2 days',
-        },
-      ),
-    };
-    return payload;
   }
 }
