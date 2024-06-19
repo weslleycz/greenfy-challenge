@@ -1,12 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-  MinLength,
-} from 'class-validator';
-import { Match } from '../../../common/decorators';
+import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -44,29 +37,4 @@ export class CreateUserDto {
       'A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais',
   })
   password: string;
-
-  @ApiProperty({
-    description:
-      'Confirmação da senha para a conta do usuário. Deve ser igual à senha fornecida.',
-    example: 'SenhaForte123@',
-    type: String,
-    minLength: 9,
-    pattern: '((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$',
-  })
-  @IsString()
-  @IsNotEmpty({ message: 'A confirmação da senha não pode estar vazia' })
-  @Match('password', {
-    message: 'As senhas não coincidem',
-  })
-  passwordConfirm: string;
-
-  @ApiProperty({
-    description: 'Número de telefone do usuário (opcional)',
-    example: '123456789',
-    type: String,
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  phoneNumber?: string;
 }

@@ -25,12 +25,11 @@ describe('UserController (e2e)', () => {
   });
 
   describe('POST /user', () => {
-    it('Deve criar um novo usuário', async () => {
+    it('should create a new user', async () => {
       const createUserDto: CreateUserDto = {
         name: 'João Silva',
         email: 'joaosilva@example.com',
-        password: 'SenhaForte123@',
-        passwordConfirm: 'SenhaForte123@',
+        password: 'StrongPassword123@',
       };
 
       await request(app.getHttpServer())
@@ -39,12 +38,11 @@ describe('UserController (e2e)', () => {
         .expect(HttpStatus.CREATED);
     });
 
-    it('Deve retornar 409 se o e-mail já existir', async () => {
+    it('should return 409 if email already exists', async () => {
       const createUserDto: CreateUserDto = {
         name: 'João Silva',
         email: 'joaosilva@example.com',
-        password: 'SenhaForte123@',
-        passwordConfirm: 'SenhaForte123@',
+        password: 'StrongPassword123@',
       };
 
       await request(app.getHttpServer())
@@ -55,7 +53,7 @@ describe('UserController (e2e)', () => {
   });
 
   describe('GET /user', () => {
-    it('Deve listar todos os usuarios', async () => {
+    it('should list all users', async () => {
       const reg = await request(app.getHttpServer())
         .get('/user')
         .expect(HttpStatus.OK);
@@ -64,7 +62,7 @@ describe('UserController (e2e)', () => {
   });
 
   describe('GET /user/id', () => {
-    it('Deve retornar os detalhes de um usuário por ID válido.', async () => {
+    it('should return details of a user by valid ID', async () => {
       const reg = await request(app.getHttpServer())
         .get('/user')
         .expect(HttpStatus.OK);
@@ -75,7 +73,7 @@ describe('UserController (e2e)', () => {
         .expect(HttpStatus.OK);
     });
 
-    it('Deve retornar 404 se o ID de usuário não for encontrado.', async () => {
+    it('should return 404 if user ID is not found', async () => {
       await request(app.getHttpServer())
         .get(`/user/e533c6c0-09ef-4df4-b7a9-9e51785d82d4`)
         .expect(HttpStatus.NOT_FOUND);

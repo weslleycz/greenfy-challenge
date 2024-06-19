@@ -1,6 +1,7 @@
+import { HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SuccessResponseDto {
+export class CreateUserSuccessResponseDto {
   @ApiProperty({
     description: 'Mensagem de confirmação da criação do usuário',
     example: 'Usuário criado com sucesso!',
@@ -8,11 +9,11 @@ export class SuccessResponseDto {
   message: string;
 
   @ApiProperty({
-    example: 200,
+    example: HttpStatus.OK,
   })
   statusCode: number;
 
-  constructor(partial: Partial<SuccessResponseDto>) {
+  constructor(partial: Partial<CreateUserSuccessResponseDto>) {
     Object.assign(this, partial);
   }
 }
