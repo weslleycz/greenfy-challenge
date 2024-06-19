@@ -90,7 +90,7 @@ export class UserController {
   })
   @ApiResponse({
     status: 403,
-    description: 'Sessão expirada',
+    description: 'Token inválido',
     type: AuthTokenUnauthorized,
   })
   @ApiBody({ type: UpdateUserDto })

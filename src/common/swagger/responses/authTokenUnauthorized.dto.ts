@@ -7,7 +7,7 @@ export class AuthTokenUnauthorized {
   })
   statusCode: number;
   @ApiProperty({
-    example: 'Sessão expirada',
+    example: 'Token inválido',
   })
   message: string;
 }
