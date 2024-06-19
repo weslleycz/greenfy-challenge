@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -24,13 +25,16 @@ import {
   CreateTaskSuccessResponseDto,
   ErrorTaskResponseDto,
   TaskResponseDTO,
+  UpdateTaskDto,
+  TaskResposeDeleteSuccessDto,
+  TaskResposeUpdateSuccessDto,
+  TaskResposeUpdateErrorDto,
 } from './dto';
 import { TaskService } from './task.service';
 
 import { Request } from 'express';
 import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
 import { TaskStatus } from '../../common/enums/task-status.enum';
-import { TaskResposeDeleteSuccessDto } from './dto/delete-task-success.dto';
 
 @ApiTags('Task')
 @Controller('task')
@@ -115,8 +119,24 @@ export class TaskController {
   @ApiOperation({ summary: 'Deletar tarefa por id' })
   async delete(
     @Param('id') id: string,
-    @Req() request: Request,
   ): Promise<TaskResposeDeleteSuccessDto | TaskNotFoundDTO> {
-    return await this.taskService.delete(id, request.headers.id as string);
+    return await this.taskService.delete(id);
+  }
+
+  @Patch('id')
+  @ApiOperation({ summary: 'Atualizar tarefa' })
+  @ApiResponse({
+    status: 200,
+    description: 'Tarefa atualizada',
+    type: TaskResposeUpdateSuccessDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Erro ao atualizar a tarefa',
+    type: TaskResposeUpdateErrorDto,
+  })
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
+  async update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
+    return await this.taskService.update(body, id);
   }
 }

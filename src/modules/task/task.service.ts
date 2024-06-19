@@ -1,15 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { TaskStatus } from '../../common/enums/task-status.enum';
 import { UserRepository } from '../user';
 import {
   CreateTaskDto,
   CreateTaskSuccessResponseDto,
   ErrorTaskResponseDto,
   TaskResponseDTO,
+  UpdateTaskDto,
 } from './dto';
-import { TaskRepository } from './task.repository';
-import { TaskStatus } from '../../common/enums/task-status.enum';
-import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
 import { TaskResposeDeleteSuccessDto } from './dto/delete-task-success.dto';
+import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
+import { TaskRepository } from './task.repository';
 
 @Injectable()
 export class TaskService {
@@ -46,6 +47,7 @@ export class TaskService {
       );
     }
   }
+
   async getById(id: string): Promise<TaskResponseDTO | TaskNotFoundDTO> {
     try {
       return await this.taskRepository.getById(id);
@@ -66,15 +68,11 @@ export class TaskService {
 
   async delete(
     id: string,
-    userId: string,
   ): Promise<TaskResposeDeleteSuccessDto | TaskNotFoundDTO> {
     try {
       const task = await this.taskRepository.findOne({
         where: {
           id,
-          user: {
-            id: userId,
-          },
         },
       });
       await this.taskRepository.remove(task);
@@ -84,6 +82,32 @@ export class TaskService {
       };
     } catch (error) {
       throw new HttpException('Tarefa não encontrada', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async update(data: UpdateTaskDto, id: string) {
+    try {
+      const taskToUpdate = await this.taskRepository.getById(id);
+
+      if (!taskToUpdate) {
+        throw new HttpException('Tarefa não encontrada', HttpStatus.NOT_FOUND);
+      }
+      taskToUpdate.updatedAt = new Date();
+      taskToUpdate.title = data.title;
+      taskToUpdate.description = data.description;
+      taskToUpdate.status = data.status;
+      await this.taskRepository.save(taskToUpdate);
+
+      return {
+        message: 'Tarefa atualizada',
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Erro ao atualizar a tarefa',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }
