@@ -30,7 +30,6 @@ describe('UserController (e2e)', () => {
         name: 'João Silva',
         email: 'joaosilva@example.com',
         password: 'StrongPassword123@',
-        passwordConfirm: 'StrongPassword123@',
       };
 
       await request(app.getHttpServer())
@@ -44,7 +43,6 @@ describe('UserController (e2e)', () => {
         name: 'João Silva',
         email: 'joaosilva@example.com',
         password: 'StrongPassword123@',
-        passwordConfirm: 'StrongPassword123@',
       };
 
       await request(app.getHttpServer())

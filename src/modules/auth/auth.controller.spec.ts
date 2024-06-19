@@ -20,7 +20,6 @@ describe('AuthController (e2e)', () => {
       name: 'auth',
       email: 'auth@example.com',
       password: 'StrongPassword123@',
-      passwordConfirm: 'StrongPassword123@',
     };
     await request(app.getHttpServer())
       .post('/user')

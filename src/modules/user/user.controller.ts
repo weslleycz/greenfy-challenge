@@ -1,46 +1,51 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
+
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ServerErrorDto } from '../../common/swagger/responses/server-error.dto';
+
+import { Request } from 'express';
+
+import { UserService } from './user.service';
+
 import {
   CreateUserDto,
+  CreateUserSuccessResponseDto,
   ErrorResponseDto,
-  SuccessResponseDto,
+  UpdateResponse,
+  UpdateUserDto,
   UserResponseDTO,
 } from './dto';
+
+import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
+import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
 import { UserNotFoundDTO } from './dto/userNotFound.dto';
-import { UserService } from './user.service';
 
 @ApiTags('User')
 @Controller('user')
-@ApiResponse({
-  status: HttpStatus.INTERNAL_SERVER_ERROR,
-  description: 'Erro Interno do Servidor.',
-  type: ServerErrorDto,
-})
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Post()
   @ApiOperation({ summary: 'Criar um novo usuário.' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: 409,
     description: 'Usuário criado com sucesso.',
-    type: SuccessResponseDto,
+    type: CreateUserSuccessResponseDto,
   })
   @ApiResponse({
-    status: HttpStatus.CONFLICT,
-    description: 'Conflito: E-mail já está em uso.',
+    status: 409,
+    description: 'E-mail já está em uso.',
     type: ErrorResponseDto,
   })
   async create(
     @Body() createCatDto: CreateUserDto,
-  ): Promise<SuccessResponseDto | ErrorResponseDto> {
+  ): Promise<CreateUserSuccessResponseDto | ErrorResponseDto> {
     return await this.userService.create(createCatDto);
   }
 
@@ -74,5 +79,36 @@ export class UserController {
     id: string,
   ): Promise<UserResponseDTO | UserNotFoundDTO> {
     return await this.userService.getById(id);
+  }
+
+  @Patch()
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 401,
+    description: 'Token não fornecido',
+    type: AuthTokenNotFound,
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Sessão expirada',
+    type: AuthTokenUnauthorized,
+  })
+  @ApiBody({ type: UpdateUserDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário atualizado',
+    type: UpdateResponse,
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'E-mail já está em uso',
+    type: ErrorResponseDto,
+  })
+  @ApiOperation({ summary: 'Atualizar informações do usuário' })
+  async update(
+    @Body() body: UpdateUserDto,
+    @Req() request: Request,
+  ): Promise<any> {
+    return await this.userService.update(body, request.headers.id as string);
   }
 }

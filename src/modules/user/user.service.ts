@@ -1,11 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BcryptService } from '../../common/services';
+import { User } from '../../entities';
+import {
+  CreateUserSuccessResponseDto,
+  ErrorResponseDto,
+  UpdateResponse,
+  UpdateUserDto,
+} from './dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserRepository } from './user.repository';
-import { SuccessResponseDto, ErrorResponseDto } from './dto';
 import { UserResponseDTO } from './dto/user-response.dto';
 import { UserNotFoundDTO } from './dto/userNotFound.dto';
-import { User } from '../../entities';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
@@ -16,13 +21,13 @@ export class UserService {
 
   async create(
     data: CreateUserDto,
-  ): Promise<SuccessResponseDto | ErrorResponseDto> {
+  ): Promise<CreateUserSuccessResponseDto | ErrorResponseDto> {
     try {
-      const userExists = await this.userRepository.findOne({
+      const users = await this.userRepository.find({
         where: { email: data.email },
       });
 
-      if (userExists) {
+      if (users.length > 0) {
         throw new HttpException(
           'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
           HttpStatus.CONFLICT,
@@ -41,7 +46,7 @@ export class UserService {
 
       await this.userRepository.save(newUser);
 
-      return new SuccessResponseDto({
+      return new CreateUserSuccessResponseDto({
         message: 'Usuário criado com sucesso!',
         statusCode: HttpStatus.OK,
       });
@@ -75,6 +80,38 @@ export class UserService {
       throw new HttpException(
         'E-mail não cadastrado. Verifique e tente novamente',
         HttpStatus.UNAUTHORIZED,
+      );
+    }
+  }
+
+  async update(data: UpdateUserDto, id: string): Promise<UpdateResponse> {
+    const { email, name, password } = data;
+    try {
+      if (!password) {
+        await this.userRepository.update(id, {
+          email,
+          name,
+          updatedAt: new Date(),
+        });
+      } else {
+        const hashPassword = await this.bcryptService.hashPassword(
+          data.password,
+        );
+        await this.userRepository.update(id, {
+          email,
+          name,
+          password: hashPassword,
+          updatedAt: new Date(),
+        });
+      }
+      return {
+        message: 'Usuario atualizado',
+        statusCode: HttpStatus.OK,
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Não é possível atualizar o endereço de e-mail porque ele está associado a outra conta',
+        HttpStatus.CONFLICT,
       );
     }
   }
