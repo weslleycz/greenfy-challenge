@@ -7,6 +7,7 @@ import {
   TaskResponseDTO,
 } from './dto';
 import { TaskRepository } from './task.repository';
+import { TaskStatus } from '../../common/enums/task-status.enum';
 
 @Injectable()
 export class TaskService {
@@ -48,6 +49,16 @@ export class TaskService {
       return await this.taskRepository.getById(id);
     } catch (error) {
       throw new HttpException('Tarefa não encontrada', HttpStatus.NOT_FOUND);
+    }
+  }
+
+  async getAll(id: string, status?: TaskStatus) {
+    if (!!status) {
+      const tasks = await this.taskRepository.getAllByUserId(id, status);
+      return tasks;
+    } else {
+      const tasks = await this.taskRepository.getAllByUserId(id);
+      return tasks;
     }
   }
 }

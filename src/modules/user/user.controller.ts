@@ -20,11 +20,11 @@ import {
   UpdateResponse,
   UpdateUserDto,
   UserResponseDTO,
+  UserNotFoundDTO,
 } from './dto';
 
 import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
 import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
-import { UserNotFoundDTO } from './dto/userNotFound.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -108,7 +108,7 @@ export class UserController {
   async update(
     @Body() body: UpdateUserDto,
     @Req() request: Request,
-  ): Promise<any> {
+  ): Promise<AuthTokenNotFound | AuthTokenUnauthorized | ErrorResponseDto> {
     return await this.userService.update(body, request.headers.id as string);
   }
 }

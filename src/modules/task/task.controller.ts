@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -18,6 +19,7 @@ import { TaskService } from './task.service';
 
 import { Request } from 'express';
 import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
+import { TaskStatus } from '../../common/enums/task-status.enum';
 
 @ApiTags('Task')
 @Controller('task')
@@ -71,5 +73,28 @@ export class TaskController {
     id: string,
   ) {
     return await this.taskService.getById(id);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Listar tarefas por usuário' })
+  @ApiQuery({
+    name: 'status',
+    enum: TaskStatus,
+    required: false,
+    description:
+      'Filtra as tarefas pelo status especificado. Se não fornecido, retorna todas as tarefas do usuário',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Lista de tarefas do usuário com base no filtro aplicado. Se nenhum filtro for aplicado, retorna todas as tarefas do usuário',
+    type: TaskResponseDTO,
+    isArray: true,
+  })
+  async getAll(
+    @Query('status') status: TaskStatus,
+    @Req() request: Request,
+  ): Promise<TaskResponseDTO[]> {
+    return await this.taskService.getAll(request.headers.id as string, status);
   }
 }
