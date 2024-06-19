@@ -41,7 +41,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description:
-      'Confirmação da senha para a conta do usuário. Deve ser igual à senha fornecida.',
+      'Confirmação da senha para a conta do usuário. Deve ser igual à senha fornecida',
     example: 'SenhaForte123@',
     type: String,
     minLength: 9,

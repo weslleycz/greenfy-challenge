@@ -7,7 +7,7 @@ export class WrongPasswordErrorResponseDTO {
   })
   statusCode: number;
   @ApiProperty({
-    example: 'Senha incorreta. Tente novamente.',
+    example: 'Senha incorreta. Tente novamente',
   })
   message: string;
 }

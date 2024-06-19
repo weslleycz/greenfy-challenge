@@ -5,7 +5,7 @@ export class ErrorResponseDto {
   @ApiProperty({
     description: 'Mensagem de erro',
     example:
-      'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
+      'Não é possível criar uma conta porque esse e-mail já está associado a outra conta',
   })
   message: string;
 

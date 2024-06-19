@@ -20,13 +20,13 @@ import { UserService } from './user.service';
 @Controller('user')
 @ApiResponse({
   status: HttpStatus.INTERNAL_SERVER_ERROR,
-  description: 'Erro Interno do Servidor',
+  description: 'Erro Interno do Servidor.',
   type: ServerErrorDto,
 })
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Post()
-  @ApiOperation({ summary: 'Criar um novo usuário' })
+  @ApiOperation({ summary: 'Criar um novo usuário.' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
     status: HttpStatus.OK,

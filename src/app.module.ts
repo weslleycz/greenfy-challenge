@@ -3,7 +3,7 @@ import { LoggerService } from './common/services';
 import { DatabaseModule } from './database';
 import { LogMiddleware } from './middlewares';
 import { UserModule } from './modules/user';
-import { AuthModule } from './modules/auth/auth.module';
+import { AuthModule } from './modules/auth';
 
 @Module({
   imports: [DatabaseModule, UserModule, AuthModule],

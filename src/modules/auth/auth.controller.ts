@@ -32,7 +32,7 @@ export class AuthController {
   })
   @ApiResponse({
     status: 401,
-    description: 'Senha incorreta',
+    description: 'Senha incorreta.',
     type: WrongPasswordErrorResponseDTO,
   })
   @ApiOperation({ summary: 'Autenticar usuário' })
