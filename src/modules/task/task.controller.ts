@@ -53,6 +53,9 @@ import { Request } from 'express';
 @ApiBearerAuth()
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
+
+  @Post()
+  @ApiOperation({ summary: 'Criar uma nova tarefa' })
   @ApiResponse({
     status: 200,
     description: 'Tarefa criada com sucesso',
@@ -63,8 +66,6 @@ export class TaskController {
     description: 'Não foi possível criar a tarefa.',
     type: ErrorTaskResponseDto,
   })
-  @ApiOperation({ summary: 'Criar uma nova tarefa' })
-  @Post()
   @ApiBody({ type: CreateTaskDto })
   async create(
     @Body() body: CreateTaskDto,
@@ -74,8 +75,8 @@ export class TaskController {
   }
 
   @Get('id')
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiOperation({ summary: 'Selecionar tarefa por id' })
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiResponse({
     status: 200,
     description: 'Retorna a tarefa selecionado',
@@ -89,7 +90,7 @@ export class TaskController {
   async getById(
     @Param('id')
     id: string,
-  ): Promise<TaskResponseDTO | TaskNotFoundDTO> {
+  ): Promise<TaskResponseDTO> {
     return await this.taskService.getById(id);
   }
 
@@ -117,11 +118,9 @@ export class TaskController {
   }
 
   @Delete('id')
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiOperation({ summary: 'Deletar tarefa por id' })
-  async delete(
-    @Param('id') id: string,
-  ): Promise<TaskResposeDeleteSuccessDto | TaskNotFoundDTO> {
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
+  async delete(@Param('id') id: string): Promise<TaskResposeDeleteSuccessDto> {
     return await this.taskService.delete(id);
   }
 

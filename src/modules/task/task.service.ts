@@ -4,12 +4,10 @@ import { UserRepository } from '../user';
 import {
   CreateTaskDto,
   CreateTaskSuccessResponseDto,
-  ErrorTaskResponseDto,
   TaskResponseDTO,
   UpdateTaskDto,
 } from './dto';
 import { TaskResposeDeleteSuccessDto } from './dto/delete-task-success.dto';
-import { TaskNotFoundDTO } from './dto/task-not-found.dto';
 import { TaskRepository } from './task.repository';
 
 @Injectable()
@@ -21,7 +19,7 @@ export class TaskService {
   async create(
     data: CreateTaskDto,
     id: string,
-  ): Promise<CreateTaskSuccessResponseDto | ErrorTaskResponseDto> {
+  ): Promise<CreateTaskSuccessResponseDto> {
     try {
       const user = await this.userRepository.findOne({
         where: {
@@ -48,7 +46,7 @@ export class TaskService {
     }
   }
 
-  async getById(id: string): Promise<TaskResponseDTO | TaskNotFoundDTO> {
+  async getById(id: string): Promise<TaskResponseDTO> {
     try {
       return await this.taskRepository.getById(id);
     } catch (error) {
@@ -66,9 +64,7 @@ export class TaskService {
     }
   }
 
-  async delete(
-    id: string,
-  ): Promise<TaskResposeDeleteSuccessDto | TaskNotFoundDTO> {
+  async delete(id: string): Promise<TaskResposeDeleteSuccessDto> {
     try {
       const task = await this.taskRepository.findOne({
         where: {

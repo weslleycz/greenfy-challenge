@@ -10,7 +10,8 @@ DATABASE_PORT=5432
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=postgres
 DATABASE_NAME=postgres
-Security_JWT="MUKO655hg56#$o+orZZzcxRs!tS91+/otS"
+SECURITY_JWT="dfgdfgdfgfdg3434233435543fghd45@fgyhfgyhfghghf"
+SECURITY_JWT_REFRESH="fghfghfgh54645645456tweqr34435465@fgyhfgyhfghghf"
 ```
 3. Instale as dependências com o comando `npm install`.
 4. Realize o build do projeto com o comando `npm run build`.

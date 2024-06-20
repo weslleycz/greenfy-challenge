@@ -25,7 +25,7 @@ export class AuthMiddleware implements NestMiddleware {
     }
     try {
       const playload = <IJwtPayload>this.jwtService.verify(token, {
-        secret: process.env.Security_JWT,
+        secret: process.env.SECURITY_JWT,
       });
       req.headers.id = playload.id;
       next();

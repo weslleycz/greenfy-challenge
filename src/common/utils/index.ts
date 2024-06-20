@@ -1,1 +1,1 @@
-export * from './gerarToken';
+export * from './generateToken';
