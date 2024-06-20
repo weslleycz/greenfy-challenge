@@ -3,6 +3,7 @@ import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -29,18 +30,18 @@ import { AuthTokenNotFound, AuthTokenUnauthorized } from '../../common';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   @Post()
   @ApiOperation({ summary: 'Criar um novo usuário.' })
   @ApiBody({ type: CreateUserDto })
+  @ApiOkResponse({
+    description: 'A test route',
+    type: CreateUserSuccessResponseDto,
+  })
   @ApiResponse({
     status: 200,
     description: 'Usuário criado com sucesso.',
     type: CreateUserSuccessResponseDto,
-  })
-  @ApiResponse({
-    status: 409,
-    description: 'E-mail já está em uso.',
-    type: ErrorResponseDto,
   })
   async create(
     @Body() createCatDto: CreateUserDto,
