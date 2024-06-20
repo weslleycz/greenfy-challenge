@@ -60,7 +60,7 @@ export class TaskController {
   })
   @ApiResponse({
     status: 401,
-    description: 'Não foi possível criar o filme.',
+    description: 'Não foi possível criar a tarefa.',
     type: ErrorTaskResponseDto,
   })
   @ApiOperation({ summary: 'Criar uma nova tarefa' })
