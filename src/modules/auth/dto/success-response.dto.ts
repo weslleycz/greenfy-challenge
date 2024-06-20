@@ -3,8 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class SuccessResponseDto {
   @ApiProperty({
     description: 'Token de acesso',
-    example:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    example: 'd249d3e3-eabd-497a-81f4-254ea1b6d5ca',
   })
   access_token: string;
 }

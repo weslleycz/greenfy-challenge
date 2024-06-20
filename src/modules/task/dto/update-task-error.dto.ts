@@ -1,14 +1,14 @@
 import { HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class NotFoundErrorResponseDTO {
+export class TaskResposeUpdateErrorDto {
   @ApiProperty({
-    example: 'E-mail não cadastrado. Verifique e tente novamente',
+    example: 'Erro ao atualizar a tarefa',
   })
   message: string;
 
   @ApiProperty({
-    example: HttpStatus.NOT_FOUND,
+    example: HttpStatus.BAD_REQUEST,
   })
   statusCode: number;
 }

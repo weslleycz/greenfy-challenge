@@ -27,8 +27,8 @@ describe('UserController (e2e)', () => {
   describe('POST /user', () => {
     it('should create a new user', async () => {
       const createUserDto: CreateUserDto = {
-        name: 'João Silva',
-        email: 'joaosilva@example.com',
+        name: 'user',
+        email: 'user@example.com',
         password: 'StrongPassword123@',
       };
 
@@ -40,8 +40,8 @@ describe('UserController (e2e)', () => {
 
     it('should return 409 if email already exists', async () => {
       const createUserDto: CreateUserDto = {
-        name: 'João Silva',
-        email: 'joaosilva@example.com',
+        name: 'user',
+        email: 'user@example.com',
         password: 'StrongPassword123@',
       };
 
@@ -77,6 +77,60 @@ describe('UserController (e2e)', () => {
       await request(app.getHttpServer())
         .get(`/user/e533c6c0-09ef-4df4-b7a9-9e51785d82d4`)
         .expect(HttpStatus.NOT_FOUND);
+    });
+  });
+
+  describe('PATCH /user', () => {
+    let access_token = '';
+    beforeAll(async () => {
+      const createUserDto: CreateUserDto = {
+        name: 'Update User',
+        email: 'updateuser@example.com',
+        password: 'StrongPassword123@',
+      };
+
+      const createUserResponse = await request(app.getHttpServer())
+        .post('/user')
+        .send(createUserDto);
+      access_token = createUserResponse.body.access_token;
+    });
+    it('should update a user successfully', async () => {
+      await request(app.getHttpServer())
+        .patch('/user')
+        .send({
+          name: 'Update User New',
+        })
+        .auth(access_token, { type: 'bearer' })
+        .expect(HttpStatus.OK);
+    });
+
+    it('should handle missing token with status 401', async () => {
+      await request(app.getHttpServer())
+        .patch('/user')
+        .send({
+          name: 'Update User New',
+        })
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should handle invalid token with 403 status', async () => {
+      await request(app.getHttpServer())
+        .patch('/user')
+        .send({
+          name: 'Update User New',
+        })
+        .auth('1234', { type: 'bearer' })
+        .expect(HttpStatus.FORBIDDEN);
+    });
+
+    it('should handle Email is already in use with 409 status', async () => {
+      await request(app.getHttpServer())
+        .patch('/user')
+        .send({
+          email: 'user@example.com',
+        })
+        .auth(access_token, { type: 'bearer' })
+        .expect(HttpStatus.CONFLICT);
     });
   });
 });

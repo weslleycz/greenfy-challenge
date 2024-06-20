@@ -4,9 +4,10 @@ import { DatabaseModule } from './database';
 import { LogMiddleware } from './middlewares';
 import { UserModule } from './modules/user';
 import { AuthModule } from './modules/auth';
+import { TaskModule } from './modules/task/task.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule],
+  imports: [DatabaseModule, UserModule, AuthModule, TaskModule],
   controllers: [],
   providers: [LoggerService],
 })

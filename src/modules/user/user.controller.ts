@@ -20,11 +20,11 @@ import {
   UpdateResponse,
   UpdateUserDto,
   UserResponseDTO,
+  UserNotFoundDTO,
 } from './dto';
 
 import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
 import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
-import { UserNotFoundDTO } from './dto/userNotFound.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -34,7 +34,7 @@ export class UserController {
   @ApiOperation({ summary: 'Criar um novo usuário.' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
-    status: 409,
+    status: 200,
     description: 'Usuário criado com sucesso.',
     type: CreateUserSuccessResponseDto,
   })
@@ -90,7 +90,7 @@ export class UserController {
   })
   @ApiResponse({
     status: 403,
-    description: 'Sessão expirada',
+    description: 'Token inválido',
     type: AuthTokenUnauthorized,
   })
   @ApiBody({ type: UpdateUserDto })
@@ -108,7 +108,7 @@ export class UserController {
   async update(
     @Body() body: UpdateUserDto,
     @Req() request: Request,
-  ): Promise<any> {
+  ): Promise<AuthTokenNotFound | AuthTokenUnauthorized | ErrorResponseDto> {
     return await this.userService.update(body, request.headers.id as string);
   }
 }

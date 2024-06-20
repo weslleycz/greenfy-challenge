@@ -10,11 +10,17 @@ export class Task {
   id: string;
 
   @Column()
-  createdAt: Date;
+  title: string;
+
+  @Column({ nullable: true })
+  description?: string;
 
   @Column()
   @ApiProperty()
   updatedAt: Date;
+
+  @Column()
+  createdAt: Date;
 
   @Column({ default: TaskStatus.PENDING })
   status: TaskStatus;

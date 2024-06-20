@@ -31,7 +31,7 @@ export class AuthMiddleware implements NestMiddleware {
       req.headers.id = playload.id;
       next();
     } catch (error) {
-      throw new HttpException('Sessão expirada', HttpStatus.FORBIDDEN);
+      throw new HttpException('Token invalido', HttpStatus.FORBIDDEN);
     }
   }
 }

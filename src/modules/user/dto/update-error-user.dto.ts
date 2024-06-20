@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateErrorResponseDto {
@@ -10,7 +11,7 @@ export class UpdateErrorResponseDto {
 
   @ApiProperty({
     description: 'Código de status HTTP',
-    example: 400,
+    example: HttpStatus.BAD_REQUEST,
   })
   statusCode: number;
 }

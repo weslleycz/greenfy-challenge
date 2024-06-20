@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BcryptService } from '../../common/services';
+import { gerarToken } from '../../common/utils/gerarToken';
 import { User } from '../../entities';
 import {
   CreateUserSuccessResponseDto,
@@ -44,12 +45,13 @@ export class UserService {
         updatedAt: new Date(),
       };
 
-      await this.userRepository.save(newUser);
-
-      return new CreateUserSuccessResponseDto({
+      const user = await this.userRepository.save(newUser);
+      const auth = await gerarToken(user);
+      return {
         message: 'Usuário criado com sucesso!',
         statusCode: HttpStatus.OK,
-      });
+        ...auth,
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
