@@ -1,16 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { BcryptService } from '../../common/services';
-import { gerarToken } from '../../common/utils/gerarToken';
+import { BcryptService, generateToken } from '../../common';
 import { User } from '../../entities';
 import {
+  CreateUserDto,
   CreateUserSuccessResponseDto,
-  ErrorResponseDto,
   UpdateResponse,
   UpdateUserDto,
+  UserResponseDTO,
 } from './dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserResponseDTO } from './dto/user-response.dto';
-import { UserNotFoundDTO } from './dto/userNotFound.dto';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -20,9 +17,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async create(
-    data: CreateUserDto,
-  ): Promise<CreateUserSuccessResponseDto | ErrorResponseDto> {
+  async create(data: CreateUserDto): Promise<CreateUserSuccessResponseDto> {
     try {
       const users = await this.userRepository.find({
         where: { email: data.email },
@@ -46,7 +41,7 @@ export class UserService {
       };
 
       const user = await this.userRepository.save(newUser);
-      const auth = await gerarToken(user);
+      const auth = await generateToken(user);
       return {
         message: 'Usuário criado com sucesso!',
         statusCode: HttpStatus.OK,
@@ -65,7 +60,7 @@ export class UserService {
     return (await this.userRepository.getAllUsers()) as Array<UserResponseDTO>;
   }
 
-  async getById(id: string): Promise<UserResponseDTO | UserNotFoundDTO> {
+  async getById(id: string): Promise<UserResponseDTO> {
     const user = await this.userRepository.getById(id);
     if (user) {
       return { ...user };

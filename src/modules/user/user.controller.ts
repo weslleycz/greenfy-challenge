@@ -19,12 +19,11 @@ import {
   ErrorResponseDto,
   UpdateResponse,
   UpdateUserDto,
-  UserResponseDTO,
   UserNotFoundDTO,
+  UserResponseDTO,
 } from './dto';
 
-import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
-import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
+import { AuthTokenNotFound, AuthTokenUnauthorized } from '../../common';
 
 @ApiTags('User')
 @Controller('user')
@@ -45,7 +44,7 @@ export class UserController {
   })
   async create(
     @Body() createCatDto: CreateUserDto,
-  ): Promise<CreateUserSuccessResponseDto | ErrorResponseDto> {
+  ): Promise<CreateUserSuccessResponseDto> {
     return await this.userService.create(createCatDto);
   }
 
@@ -77,11 +76,12 @@ export class UserController {
   async getById(
     @Param('id')
     id: string,
-  ): Promise<UserResponseDTO | UserNotFoundDTO> {
+  ): Promise<UserResponseDTO> {
     return await this.userService.getById(id);
   }
 
   @Patch()
+  @ApiOperation({ summary: 'Atualizar informações do usuário' })
   @ApiBearerAuth()
   @ApiResponse({
     status: 401,
@@ -104,11 +104,10 @@ export class UserController {
     description: 'E-mail já está em uso',
     type: ErrorResponseDto,
   })
-  @ApiOperation({ summary: 'Atualizar informações do usuário' })
   async update(
     @Body() body: UpdateUserDto,
     @Req() request: Request,
-  ): Promise<AuthTokenNotFound | AuthTokenUnauthorized | ErrorResponseDto> {
+  ): Promise<UpdateResponse> {
     return await this.userService.update(body, request.headers.id as string);
   }
 }

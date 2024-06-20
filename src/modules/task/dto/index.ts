@@ -6,3 +6,4 @@ export * from './update-task.dto';
 export * from './delete-task-success.dto';
 export * from './update-task-success.dto';
 export * from './update-task-error.dto';
+export * from './task-not-found.dto';

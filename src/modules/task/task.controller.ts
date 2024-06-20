@@ -18,23 +18,25 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
-import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
+import {
+  AuthTokenUnauthorized,
+  TaskStatus,
+  AuthTokenNotFound,
+} from '../../common';
 import {
   CreateTaskDto,
   CreateTaskSuccessResponseDto,
   ErrorTaskResponseDto,
   TaskResponseDTO,
-  UpdateTaskDto,
   TaskResposeDeleteSuccessDto,
-  TaskResposeUpdateSuccessDto,
   TaskResposeUpdateErrorDto,
+  TaskResposeUpdateSuccessDto,
+  UpdateTaskDto,
+  TaskNotFoundDTO,
 } from './dto';
 import { TaskService } from './task.service';
 
 import { Request } from 'express';
-import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
-import { TaskStatus } from '../../common/enums/task-status.enum';
 
 @ApiTags('Task')
 @Controller('task')
@@ -51,6 +53,9 @@ import { TaskStatus } from '../../common/enums/task-status.enum';
 @ApiBearerAuth()
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
+
+  @Post()
+  @ApiOperation({ summary: 'Criar uma nova tarefa' })
   @ApiResponse({
     status: 200,
     description: 'Tarefa criada com sucesso',
@@ -58,11 +63,9 @@ export class TaskController {
   })
   @ApiResponse({
     status: 401,
-    description: 'Não foi possível criar o filme.',
+    description: 'Não foi possível criar a tarefa.',
     type: ErrorTaskResponseDto,
   })
-  @ApiOperation({ summary: 'Criar uma nova tarefa' })
-  @Post()
   @ApiBody({ type: CreateTaskDto })
   async create(
     @Body() body: CreateTaskDto,
@@ -72,8 +75,8 @@ export class TaskController {
   }
 
   @Get('id')
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiOperation({ summary: 'Selecionar tarefa por id' })
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiResponse({
     status: 200,
     description: 'Retorna a tarefa selecionado',
@@ -87,7 +90,7 @@ export class TaskController {
   async getById(
     @Param('id')
     id: string,
-  ): Promise<TaskResponseDTO | TaskNotFoundDTO> {
+  ): Promise<TaskResponseDTO> {
     return await this.taskService.getById(id);
   }
 
@@ -115,11 +118,9 @@ export class TaskController {
   }
 
   @Delete('id')
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
   @ApiOperation({ summary: 'Deletar tarefa por id' })
-  async delete(
-    @Param('id') id: string,
-  ): Promise<TaskResposeDeleteSuccessDto | TaskNotFoundDTO> {
+  @ApiParam({ name: 'id', description: 'ID da tarefa' })
+  async delete(@Param('id') id: string): Promise<TaskResposeDeleteSuccessDto> {
     return await this.taskService.delete(id);
   }
 

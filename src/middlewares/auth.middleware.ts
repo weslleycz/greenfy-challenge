@@ -6,9 +6,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
-import { IJwtPayload } from '../common/interfaces/jwt.interface';
 import * as dotenv from 'dotenv';
-
+import { IJwtPayload } from '../common';
 dotenv.config();
 
 @Injectable()
@@ -26,7 +25,7 @@ export class AuthMiddleware implements NestMiddleware {
     }
     try {
       const playload = <IJwtPayload>this.jwtService.verify(token, {
-        secret: process.env.Security_JWT,
+        secret: process.env.SECURITY_JWT,
       });
       req.headers.id = playload.id;
       next();
