@@ -18,23 +18,25 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
-import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
+import {
+  AuthTokenUnauthorized,
+  TaskStatus,
+  AuthTokenNotFound,
+} from '../../common';
 import {
   CreateTaskDto,
   CreateTaskSuccessResponseDto,
   ErrorTaskResponseDto,
   TaskResponseDTO,
-  UpdateTaskDto,
   TaskResposeDeleteSuccessDto,
-  TaskResposeUpdateSuccessDto,
   TaskResposeUpdateErrorDto,
+  TaskResposeUpdateSuccessDto,
+  UpdateTaskDto,
+  TaskNotFoundDTO,
 } from './dto';
 import { TaskService } from './task.service';
 
 import { Request } from 'express';
-import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
-import { TaskStatus } from '../../common/enums/task-status.enum';
 
 @ApiTags('Task')
 @Controller('task')

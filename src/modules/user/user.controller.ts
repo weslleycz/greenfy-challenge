@@ -23,8 +23,7 @@ import {
   UserNotFoundDTO,
 } from './dto';
 
-import { AuthTokenUnauthorized } from '../../common/swagger/responses/authTokenUnauthorized.dto';
-import { AuthTokenNotFound } from '../../common/swagger/responses/autokenNotFound.dto';
+import { AuthTokenUnauthorized, AuthTokenNotFound } from '../../common';
 
 @ApiTags('User')
 @Controller('user')

@@ -6,7 +6,7 @@ import {
   SuccessResponseDto,
   WrongPasswordErrorResponseDTO,
 } from './dto';
-import { LocalStrategy } from './local.auth';
+import { LocalStrategy } from './local-auth';
 
 @ApiTags('Auth')
 @Controller('auth')

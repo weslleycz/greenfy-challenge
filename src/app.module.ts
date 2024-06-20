@@ -4,7 +4,7 @@ import { DatabaseModule } from './database';
 import { LogMiddleware } from './middlewares';
 import { UserModule } from './modules/user';
 import { AuthModule } from './modules/auth';
-import { TaskModule } from './modules/task/task.module';
+import { TaskModule } from './modules/task';
 
 @Module({
   imports: [DatabaseModule, UserModule, AuthModule, TaskModule],

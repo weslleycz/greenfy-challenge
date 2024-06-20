@@ -5,9 +5,9 @@ import { AuthService } from './auth.service';
 import {
   LoginRequestDTO,
   NotFoundErrorResponseDTO,
+  WrongPasswordErrorResponseDTO,
   SuccessResponseDto,
 } from './dto';
-import { WrongPasswordErrorResponseDTO } from './dto/wrong-password-error-response.dto';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {

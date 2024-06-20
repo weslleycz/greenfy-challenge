@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Task } from '../../entities';
 import { TaskResponseDTO } from './dto';
-import { TaskStatus } from '../../common/enums/task-status.enum';
+import { TaskStatus } from '../../common';
 
 @Injectable()
 export class TaskRepository extends Repository<Task> {

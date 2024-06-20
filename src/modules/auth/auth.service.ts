@@ -1,14 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
-import { BcryptService } from '../../common/services';
-import { gerarToken } from '../../common/utils/gerarToken';
+import { BcryptService, gerarToken } from '../../common';
 import { UserService } from '../user';
 import {
   NotFoundErrorResponseDTO,
   SuccessResponseDto,
   WrongPasswordErrorResponseDTO,
+  LoginRequestDTO,
 } from './dto';
-import { LoginRequestDTO } from './dto/login.dto';
 
 dotenv.config();
 @Injectable()

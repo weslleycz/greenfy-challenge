@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TaskStatus } from '../../common/enums/task-status.enum';
+import { TaskStatus } from '../../common';
 import { UserRepository } from '../user';
 import {
   CreateTaskDto,
@@ -9,7 +9,7 @@ import {
   UpdateTaskDto,
 } from './dto';
 import { TaskResposeDeleteSuccessDto } from './dto/delete-task-success.dto';
-import { TaskNotFoundDTO } from './dto/taskNotFound.dto';
+import { TaskNotFoundDTO } from './dto/task-not-found.dto';
 import { TaskRepository } from './task.repository';
 
 @Injectable()

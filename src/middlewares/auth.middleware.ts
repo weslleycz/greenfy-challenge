@@ -6,9 +6,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
-import { IJwtPayload } from '../common/interfaces/jwt.interface';
 import * as dotenv from 'dotenv';
-
+import { IJwtPayload } from '../common';
 dotenv.config();
 
 @Injectable()

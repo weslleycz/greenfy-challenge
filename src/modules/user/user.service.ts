@@ -1,16 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { BcryptService } from '../../common/services';
-import { gerarToken } from '../../common/utils/gerarToken';
+import { BcryptService, gerarToken } from '../../common';
 import { User } from '../../entities';
 import {
   CreateUserSuccessResponseDto,
   ErrorResponseDto,
   UpdateResponse,
   UpdateUserDto,
+  CreateUserDto,
+  UserNotFoundDTO,
+  UserResponseDTO,
 } from './dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserResponseDTO } from './dto/user-response.dto';
-import { UserNotFoundDTO } from './dto/userNotFound.dto';
 import { UserRepository } from './user.repository';
 
 @Injectable()
