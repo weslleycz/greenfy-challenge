@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MinLength,
+  IsEmail,
+} from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -8,8 +14,8 @@ export class CreateUserDto {
     type: String,
     minLength: 1,
   })
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'O nome deve ser uma string' })
+  @IsNotEmpty({ message: 'O nome não pode estar vazio' })
   name: string;
 
   @ApiProperty({
@@ -18,8 +24,9 @@ export class CreateUserDto {
     type: String,
     format: 'email',
   })
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'O e-mail deve ser uma string' })
+  @IsNotEmpty({ message: 'O e-mail não pode estar vazio' })
+  @IsEmail({}, { message: 'O e-mail deve ser válido' })
   email: string;
 
   @ApiProperty({
@@ -29,7 +36,7 @@ export class CreateUserDto {
     minLength: 9,
     pattern: '((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$',
   })
-  @IsString()
+  @IsString({ message: 'A senha deve ser uma string' })
   @MinLength(9, { message: 'A senha deve ter pelo menos 9 caracteres' })
   @IsNotEmpty({ message: 'A senha não pode estar vazia' })
   @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
