@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ErrorTaskResponseDto {
   @ApiProperty({
-    example: 'Não foi possível criar o filme',
+    example: 'Não foi possível criar a tarefa.',
   })
   message: string;
 

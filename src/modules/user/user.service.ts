@@ -95,7 +95,7 @@ export class UserService {
       }
       return {
         message: 'Usuario atualizado',
-        statusCode: HttpStatus.OK,
+        statusCode: HttpStatus.CREATED,
       };
     } catch (error) {
       throw new HttpException(

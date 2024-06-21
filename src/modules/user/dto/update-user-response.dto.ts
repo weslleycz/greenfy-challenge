@@ -10,5 +10,5 @@ export class UpdateResponse {
   @ApiProperty({
     example: 201,
   })
-  statusCode: HttpStatus.OK;
+  statusCode: HttpStatus.CREATED;
 }

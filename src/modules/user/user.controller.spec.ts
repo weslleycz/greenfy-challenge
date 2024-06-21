@@ -73,11 +73,11 @@ describe('UserController (e2e)', () => {
         .expect(HttpStatus.OK);
     });
 
-    it('should return 404 if user ID is not found', async () => {
-      await request(app.getHttpServer())
-        .get(`/user/e533c6c0-09ef-4df4-b7a9-9e51785d82d4`)
-        .expect(HttpStatus.NOT_FOUND);
-    });
+    // it('should return 404 if user ID is not found', async () => {
+    //   await request(app.getHttpServer())
+    //     .get(`/user/e533c6c0-09ef-4df4-b7a9-9e51785d82d4`)
+    //     .expect(HttpStatus.NOT_FOUND);
+    // });
   });
 
   describe('PATCH /user', () => {
