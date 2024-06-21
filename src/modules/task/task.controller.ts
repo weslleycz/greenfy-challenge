@@ -57,7 +57,7 @@ export class TaskController {
   @Post()
   @ApiOperation({ summary: 'Criar uma nova tarefa' })
   @ApiResponse({
-    status: 200,
+    status: 201,
     description: 'Tarefa criada com sucesso',
     type: CreateTaskSuccessResponseDto,
   })
@@ -70,7 +70,7 @@ export class TaskController {
   async create(
     @Body() body: CreateTaskDto,
     @Req() request: Request,
-  ): Promise<AuthTokenUnauthorized | ErrorTaskResponseDto> {
+  ): Promise<CreateTaskSuccessResponseDto> {
     return await this.taskService.create(body, request.headers.id as string);
   }
 

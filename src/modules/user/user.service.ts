@@ -43,7 +43,7 @@ export class UserService {
     const auth = await generateToken(user);
     return {
       message: 'Usuário criado com sucesso',
-      statusCode: HttpStatus.OK,
+      statusCode: HttpStatus.CREATED,
       ...auth,
     };
   }
@@ -53,10 +53,10 @@ export class UserService {
   }
 
   async getById(id: string): Promise<UserResponseDTO> {
-    const user = await this.userRepository.getById(id);
-    if (user) {
+    try {
+      const user = await this.userRepository.getById(id);
       return { ...user };
-    } else {
+    } catch (error) {
       throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
     }
   }

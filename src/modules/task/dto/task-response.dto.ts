@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Task } from '../../../entities';
 import { TaskStatus } from '../../../common/enums/task-status.enum';
 
-type TaskOmitUser = Omit<Task, 'users'>;
+type TaskOmitUser = Omit<Task, 'user'>;
 
 export class TaskResponseDTO implements TaskOmitUser {
   @ApiProperty({ description: 'ID da tarefa' })

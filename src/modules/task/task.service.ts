@@ -34,7 +34,7 @@ export class TaskService {
         user: user,
       });
       return {
-        statusCode: HttpStatus.OK,
+        statusCode: HttpStatus.CREATED,
         message: 'Tarefa criada com sucesso',
       };
     } catch (error) {
@@ -55,12 +55,26 @@ export class TaskService {
   }
 
   async getAll(id: string, status?: TaskStatus) {
-    if (!!status) {
-      const tasks = await this.taskRepository.getAllByUserId(id, status);
-      return tasks;
-    } else {
-      const tasks = await this.taskRepository.getAllByUserId(id);
-      return tasks;
+    try {
+      if (!!status) {
+        const user = await this.userRepository.findOne({
+          where: {
+            id,
+          },
+        });
+        const tasks = await this.taskRepository.getAllByUserId(user, status);
+        return tasks;
+      } else {
+        const user = await this.userRepository.findOne({
+          where: {
+            id,
+          },
+        });
+        const tasks = await this.taskRepository.getAllByUserId(user);
+        return tasks;
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
