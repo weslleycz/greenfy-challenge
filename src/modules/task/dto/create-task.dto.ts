@@ -8,8 +8,8 @@ export class CreateTaskDto {
     example: 'Fazer compras',
     type: String,
   })
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'O título deve ser uma string' })
+  @IsNotEmpty({ message: 'O título não pode estar vazio' })
   title: string;
 
   @ApiProperty({
@@ -18,7 +18,7 @@ export class CreateTaskDto {
     required: false,
     type: String,
   })
-  @IsString()
+  @IsString({ message: 'A descrição deve ser uma string' })
   @IsOptional()
   description?: string;
 
@@ -29,6 +29,8 @@ export class CreateTaskDto {
     required: false,
   })
   @IsOptional()
-  @IsEnum(TaskStatus)
+  @IsEnum(TaskStatus, {
+    message: 'O status deve ser (PENDING ou CONCLUSION)',
+  })
   status: TaskStatus;
 }

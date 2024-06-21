@@ -18,42 +18,34 @@ export class UserService {
   ) {}
 
   async create(data: CreateUserDto): Promise<CreateUserSuccessResponseDto> {
-    try {
-      const users = await this.userRepository.find({
-        where: { email: data.email },
-      });
+    const users = await this.userRepository.find({
+      where: { email: data.email },
+    });
 
-      if (users.length > 0) {
-        throw new HttpException(
-          'Não é possível criar uma conta porque esse e-mail já está associado a outra conta.',
-          HttpStatus.CONFLICT,
-        );
-      }
-
-      const hashPassword = await this.bcryptService.hashPassword(data.password);
-
-      const newUser = {
-        email: data.email,
-        name: data.name,
-        password: hashPassword,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      const user = await this.userRepository.save(newUser);
-      const auth = await generateToken(user);
-      return {
-        message: 'Usuário criado com sucesso!',
-        statusCode: HttpStatus.OK,
-        ...auth,
-      };
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    if (users.length > 0) {
+      throw new HttpException(
+        'Não é possível criar uma conta porque esse e-mail já está associado a outra conta',
+        HttpStatus.CONFLICT,
+      );
     }
+
+    const hashPassword = await this.bcryptService.hashPassword(data.password);
+
+    const newUser = {
+      email: data.email,
+      name: data.name,
+      password: hashPassword,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const user = await this.userRepository.save(newUser);
+    const auth = await generateToken(user);
+    return {
+      message: 'Usuário criado com sucesso',
+      statusCode: HttpStatus.OK,
+      ...auth,
+    };
   }
 
   async getAll(): Promise<Array<UserResponseDTO>> {

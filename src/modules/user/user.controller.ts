@@ -29,17 +29,19 @@ import { AuthTokenNotFound, AuthTokenUnauthorized } from '../../common';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   @Post()
-  @ApiOperation({ summary: 'Criar um novo usuário.' })
+  @ApiOperation({ summary: 'Criar um novo usuário' })
   @ApiBody({ type: CreateUserDto })
   @ApiResponse({
     status: 200,
-    description: 'Usuário criado com sucesso.',
+    description: 'Usuário criado com sucesso',
     type: CreateUserSuccessResponseDto,
   })
   @ApiResponse({
     status: 409,
-    description: 'E-mail já está em uso.',
+    description:
+      'Não é possível criar uma conta porque esse e-mail já está associado a outra conta',
     type: ErrorResponseDto,
   })
   async create(
@@ -52,7 +54,7 @@ export class UserController {
   @ApiOperation({ summary: 'Obter todos os usuários' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de todos os usuários.',
+    description: 'Lista de todos os usuários',
     type: UserResponseDTO,
     isArray: true,
   })
