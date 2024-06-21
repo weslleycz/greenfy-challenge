@@ -22,6 +22,6 @@ export class User {
   @Column()
   updatedAt: Date;
 
-  @OneToMany(() => Task, (task) => task.user)
+  @OneToMany(() => Task, (task) => task.users)
   tasks: Task[];
 }

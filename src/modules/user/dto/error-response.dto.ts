@@ -10,7 +10,7 @@ export class ErrorResponseDto {
 
   @ApiProperty({
     description: 'Código de status HTTP',
-    example: HttpStatus.CONFLICT,
+    example: HttpStatus.OK,
   })
   statusCode: number;
 

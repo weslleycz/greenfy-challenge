@@ -9,7 +9,7 @@ export class CreateUserSuccessResponseDto {
   message: string;
 
   @ApiProperty({
-    example: HttpStatus.OK,
+    example: HttpStatus.CREATED,
   })
   statusCode: number;
 
