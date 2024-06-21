@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Task } from '../../entities';
+import { Task, User } from '../../entities';
 import { TaskResponseDTO } from './dto';
 import { TaskStatus } from '../../common';
 
@@ -11,7 +11,7 @@ export class TaskRepository extends Repository<Task> {
   }
 
   async getById(id: string): Promise<TaskResponseDTO> {
-    return await this.findOne({
+    const task = await this.findOne({
       where: {
         id,
       },
@@ -24,15 +24,16 @@ export class TaskRepository extends Repository<Task> {
         'updatedAt',
       ],
     });
+    return task;
   }
 
-  async getAllByUserId(
-    id: string,
+  async getAllByUser(
+    user: User,
     status?: TaskStatus,
   ): Promise<TaskResponseDTO[]> {
     const whereCondition = status
-      ? { status: status, user: { id } }
-      : { user: { id } };
+      ? { status: status, user: user }
+      : { user: user };
 
     return (await this.find({
       where: whereCondition,

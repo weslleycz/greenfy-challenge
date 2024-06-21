@@ -8,7 +8,7 @@ export class CreateTaskSuccessResponseDto {
   message: string;
 
   @ApiProperty({
-    example: HttpStatus.OK,
+    example: HttpStatus.CREATED,
   })
   statusCode: number;
 }

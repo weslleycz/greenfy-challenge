@@ -55,7 +55,6 @@ export class AuthService {
         },
       );
       const user = await this.usersService.getByEmail(playload.email);
-      console.log(await generateToken(user));
       return await generateToken(user);
     } catch (error) {
       if (error.name === 'JsonWebTokenError') {

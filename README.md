@@ -1,13 +1,14 @@
 # Greenfy-challenge - API de Gerenciamento de Tarefas
 
 ## Tecnologias
-- NestJS
-- TypeORM
-- PostgreSQL
-- Docker
-- Docker Compose
-- Passport
-- Swagger
+- **NestJS**: Framework de Node.js para construir aplicações server-side eficientes e escaláveis.
+- **TypeORM**: ORM (Object-Relational Mapper) para TypeScript e JavaScript.
+- **PostgreSQL**: Sistema de gerenciamento de banco de dados relacional.
+- **Docker**: Plataforma para desenvolvimento, envio e execução de aplicações dentro de contêineres.
+- **Docker Compose**: Ferramenta para definir e gerenciar aplicações multi-contêiner Docker.
+- **Passport**: Middleware de autenticação para Node.js.
+- **Swagger**: Ferramenta para documentação de APIs.
+- **class-validator**: Biblioteca para validação de objetos no TypeScript.
 
 ## Rodando a Aplicação em Ambiente de Desenvolvimento
 
@@ -63,7 +64,7 @@ SECURITY_JWT_REFRESH="fghfghfgh54645645456tweqr34435465@fgyhfgyhfghghf"
 ```
 docker-compose -f docker-compose.prod.yml up
 ou
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose -f docker-compose.prod.yml up -d
 ```
 
 3. Acesse http://localhost:3000/docs para visualizar a documentação
