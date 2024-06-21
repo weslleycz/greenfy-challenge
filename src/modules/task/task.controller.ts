@@ -62,7 +62,7 @@ export class TaskController {
     type: CreateTaskSuccessResponseDto,
   })
   @ApiResponse({
-    status: 401,
+    status: 400,
     description: 'Não foi possível criar a tarefa.',
     type: ErrorTaskResponseDto,
   })
@@ -74,9 +74,9 @@ export class TaskController {
     return await this.taskService.create(body, request.headers.id as string);
   }
 
-  @Get('id')
+  @Get('/:taskId')
   @ApiOperation({ summary: 'Selecionar tarefa por id' })
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
+  @ApiParam({ name: 'taskId', description: 'ID da tarefa' })
   @ApiResponse({
     status: 200,
     description: 'Retorna a tarefa selecionado',
@@ -87,10 +87,7 @@ export class TaskController {
     description: 'Tarefa não encontrada',
     type: TaskNotFoundDTO,
   })
-  async getById(
-    @Param('id')
-    id: string,
-  ): Promise<TaskResponseDTO> {
+  async getById(@Param('taskId') id: string): Promise<TaskResponseDTO> {
     return await this.taskService.getById(id);
   }
 
@@ -117,14 +114,21 @@ export class TaskController {
     return await this.taskService.getAll(request.headers.id as string, status);
   }
 
-  @Delete('id')
+  @Delete('/:taskId')
   @ApiOperation({ summary: 'Deletar tarefa por id' })
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
-  async delete(@Param('id') id: string): Promise<TaskResposeDeleteSuccessDto> {
+  @ApiParam({ name: 'taskId', description: 'ID da tarefa' })
+  @ApiResponse({
+    status: 200,
+    description: 'Tarefa removida',
+    type: TaskResposeDeleteSuccessDto,
+  })
+  async delete(
+    @Param('taskId') id: string,
+  ): Promise<TaskResposeDeleteSuccessDto> {
     return await this.taskService.delete(id);
   }
 
-  @Patch('id')
+  @Patch('/:taskId')
   @ApiOperation({ summary: 'Atualizar tarefa' })
   @ApiResponse({
     status: 200,
@@ -136,8 +140,8 @@ export class TaskController {
     description: 'Erro ao atualizar a tarefa',
     type: TaskResposeUpdateErrorDto,
   })
-  @ApiParam({ name: 'id', description: 'ID da tarefa' })
-  async update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
+  @ApiParam({ name: 'taskId', description: 'ID da tarefa' })
+  async update(@Param('taskId') id: string, @Body() body: UpdateTaskDto) {
     return await this.taskService.update(body, id);
   }
 }

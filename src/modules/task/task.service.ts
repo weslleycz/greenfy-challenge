@@ -32,13 +32,13 @@ export class TaskService {
         description: data.description,
         title: data.title,
         user: user,
+        status: data.status,
       });
       return {
         statusCode: HttpStatus.CREATED,
         message: 'Tarefa criada com sucesso',
       };
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Não foi possível criar a tarefa',
         HttpStatus.BAD_REQUEST,
@@ -55,26 +55,22 @@ export class TaskService {
   }
 
   async getAll(id: string, status?: TaskStatus) {
-    try {
-      if (!!status) {
-        const user = await this.userRepository.findOne({
-          where: {
-            id,
-          },
-        });
-        const tasks = await this.taskRepository.getAllByUserId(user, status);
-        return tasks;
-      } else {
-        const user = await this.userRepository.findOne({
-          where: {
-            id,
-          },
-        });
-        const tasks = await this.taskRepository.getAllByUserId(user);
-        return tasks;
-      }
-    } catch (error) {
-      console.log(error);
+    if (!!status) {
+      const user = await this.userRepository.findOne({
+        where: {
+          id,
+        },
+      });
+      const tasks = await this.taskRepository.getAllByUser(user, status);
+      return tasks;
+    } else {
+      const user = await this.userRepository.findOne({
+        where: {
+          id,
+        },
+      });
+      const tasks = await this.taskRepository.getAllByUser(user);
+      return tasks;
     }
   }
 
@@ -113,7 +109,6 @@ export class TaskService {
         statusCode: HttpStatus.OK,
       };
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Erro ao atualizar a tarefa',
         HttpStatus.BAD_REQUEST,

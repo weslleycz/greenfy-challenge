@@ -11,7 +11,7 @@ export class TaskRepository extends Repository<Task> {
   }
 
   async getById(id: string): Promise<TaskResponseDTO> {
-    return await this.findOne({
+    const task = await this.findOne({
       where: {
         id,
       },
@@ -24,15 +24,16 @@ export class TaskRepository extends Repository<Task> {
         'updatedAt',
       ],
     });
+    return task;
   }
 
-  async getAllByUserId(
+  async getAllByUser(
     user: User,
     status?: TaskStatus,
   ): Promise<TaskResponseDTO[]> {
     const whereCondition = status
-      ? { status: status, users: user }
-      : { users: user };
+      ? { status: status, user: user }
+      : { user: user };
 
     return (await this.find({
       where: whereCondition,
